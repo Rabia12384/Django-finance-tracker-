@@ -2,5 +2,51 @@
 {% block title %}Dashboard{% endblock title %} 
 
 {% block content %}
-<h1>Dashboard</h1>
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4"> Welcome to your Finance Dashboard</h1>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-lg font-semibold">{{request.user|capfirst}}</h2>
+            <p class="text-2xl">${{ total_income|floatformat:2 }}</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-lg font-semibold">Total Expense</h2>
+            <p class="text-2xl">${{ total_expense|floatformat:2 }}</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-lg font-semibold">Net Savings</h2>
+            <p class="text-2xl">${{ net_savings|floatformat:2 }}</p>
+        </div>
+    </div>
+
+    <div class="mt-8">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold">Your Goals</h2>
+            <a href="{% url 'goal_add' %}" class="text-sm text-blue-600 hover:underline">+ Add Goal</a>
+        </div>
+
+        {% if goal_progress %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for item in goal_progress %}
+            <div class="bg-white p-4 rounded shadow">
+                <h3 class="text-lg font-semibold">{{ item.goal.name }}</h3>
+                <p class="text-sm text-gray-600">
+                    Target: ${{ item.goal.target_amount|floatformat:2 }} · Current: ${{ item.goal.current_amount|floatformat:2 }}
+                </p>
+                <p class="text-sm text-gray-600">Deadline: {{ item.goal.deadline }}</p>
+
+                <div class="mt-3">
+                    <div class="h-2 bg-gray-200 rounded">
+                        <div class="h-2 bg-green-500 rounded" style="width: {{ item.progress|floatformat:0 }}%;"></div>
+                    </div>
+                    <p class="text-xs text-gray-700 mt-1">Progress: {{ item.progress|floatformat:1 }}%</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-sm text-gray-600">You don’t have any goals yet. <a href="{% url 'goal_add' %}" class="text-blue-600 hover:underline">Create one</a> to keep track of your savings.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock content %}

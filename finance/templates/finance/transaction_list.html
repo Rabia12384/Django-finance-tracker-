@@ -1,0 +1,16 @@
+{% extends "finance/base.html" %}
+{% block title %}Transaction List{% endblock title %} 
+
+{% block content %}
+<h1 class="text-xl font-bold">Transaction List</h1>
+{% for transaction in transactions %}
+  <div class="bg-white p-4 shadow-md mb-4">
+    <p><strong>ID:</strong> {{transaction.id}}</p>
+    <p><strong>Title:</strong> {{transaction.title}}</p>
+    <p><strong>Amount:</strong> {{transaction.amount}}</p>
+    <p><strong>Transaction Type:</strong> {{transaction.transaction_type}}</p>
+    <p><strong>Category:</strong> {{transaction.category}}</p>
+    <p><strong>Date:</strong> {{transaction.date}}</p>
+  </div>
+{% endfor %}
+{% endblock content %}
